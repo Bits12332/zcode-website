@@ -92,8 +92,6 @@
       color: #00bfff;
       text-shadow: 0 0 10px #00bfff80;
     }
-
-    /* Donators */
     #donators {
       background: linear-gradient(180deg, #0d1a26 0%, #000814 100%);
       padding: 2rem;
@@ -146,8 +144,6 @@
     .donator-cta a:hover {
       color: #0099cc;
     }
-
-    /* Servers Section Styling */
     .server-category {
       border: 2px solid #00bfff88;
       border-radius: 15px;
@@ -160,20 +156,17 @@
     .server-category:hover {
       box-shadow: 0 0 35px #00bfff88;
     }
-
     .server-category h3 {
       margin-top: 0;
       margin-bottom: 1rem;
       text-align: center;
       text-shadow: 0 0 8px #00bfffaa;
     }
-
     .server-list {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-
     .server-card {
       background: #121b2c;
       border-radius: 10px;
@@ -205,13 +198,10 @@
       color: #0099cc;
       text-decoration: underline;
     }
-
-    /* ✅ Mobile Responsive Styles */
     @media (max-width: 768px) {
       body {
         flex-direction: column;
       }
-
       aside {
         width: 100%;
         flex-direction: row;
@@ -220,28 +210,69 @@
         border-bottom: 2px solid #00bfff;
         padding: 1rem;
       }
-
       aside h1 {
         display: none;
       }
-
       aside button {
         padding: 0.5rem 0.8rem;
         font-size: 0.9rem;
       }
-
       main {
         padding: 1rem;
       }
-
       .home-logo {
         font-size: 3rem;
       }
-
       .home-description {
         font-size: 1rem;
         line-height: 1.5;
       }
+    }
+    /* Extra styling for validators */
+    .validator-section {
+      max-width: 700px;
+      margin: 0 auto 3rem auto;
+      background: radial-gradient(circle at top left, #101c2a, #08122a);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 25px #00bfff44;
+      border: 2px solid #00bfff88;
+    }
+    .validator-section textarea {
+      width: 100%;
+      background: #121212;
+      color: #e0e0e0;
+      border: 2px solid #00bfff88;
+      padding: 1rem;
+      border-radius: 10px;
+      font-family: monospace;
+      font-size: 1rem;
+      resize: vertical;
+      margin-top: 1rem;
+    }
+    .validator-section button {
+      background: #00bfff;
+      border: none;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      transition: all 0.3s ease;
+    }
+    .validator-section button:hover {
+      background: #008ecc;
+      transform: scale(1.03);
+    }
+    .validator-result {
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: center;
     }
   </style>
 </head>
@@ -251,10 +282,10 @@
     <button onclick="showPage('home')">Home</button>
     <button onclick="showPage('servers')">Servers</button>
     <button onclick="showPage('donators')">Top Donators</button>
-    <button onclick="window.open('https://discord.gg/jqk9TqpEBZ')">Discord</button>
+    <button onclick="showPage('xml-validator')">XML/JSON Validator</button>
+    <button onclick="window.open('https://discord.gg/jqk9TqpEBZ')">Zcode Discord</button>
   </aside>
   <main>
-    <!-- Home Page -->
     <section id="home" class="page active">
       <h1 class="home-logo glow">Zcode</h1>
       <p class="home-description">
@@ -274,20 +305,29 @@
         <em>Join us and bring your DayZ ideas to life.</em>
       </p>
     </section>
-
-    <!-- Top Donators Page -->
     <section id="donators" class="page">
       <h2 class="glow">🌟 Top Donators Wall of Fame 🌟</h2>
       <p class="donator-cta">
-        Want to see your name shine here? <strong class="glow">Donate £30 or more</strong> and become a legendary supporter of Zcode!
+        Want to see your name shine here? <strong class="glow">Donate £20 or more</strong> and become a legendary supporter of Zcode!
         <br /><br />
         Already donated? <a href="https://discord.gg/VxwYuf4KcP" target="_blank">Open a ticket</a> on our Discord so we can proudly feature your name!
       </p>
-      <div class="donator-list">
-        <div class="donator-card">
-          <h4></h4>
-          <p>Donated $150 – Huge supporter since 2023!</p>
-        </div>
+    </section>
+    <section id="xml-validator" class="page">
+      <h2 class="glow">📄 DayZ XML Validator</h2>
+      <p style="text-align: center;">Paste your DayZ XML code below to check if it’s valid.</p>
+      <div class="validator-section">
+        <textarea id="xmlInput" rows="15" placeholder="Paste your XML here..."></textarea>
+        <button onclick="validateXML()">Validate XML</button>
+        <p id="xmlResult" class="validator-result"></p>
+      </div>
+
+      <h2 class="glow" style="margin-top: 3rem;">🟦 JSON Validator</h2>
+      <p style="text-align: center;">Paste your JSON code below to check if it’s valid.</p>
+      <div class="validator-section">
+        <textarea id="jsonInput" rows="15" placeholder="Paste your JSON here..."></textarea>
+        <button onclick="validateJSON()">Validate JSON</button>
+        <p id="jsonResult" class="validator-result"></p>
       </div>
     </section>
   </main>
@@ -297,6 +337,55 @@
         page.classList.remove('active');
       });
       document.getElementById(pageId).classList.add('active');
+    }
+
+    function validateXML() {
+      const xmlText = document.getElementById("xmlInput").value;
+      const resultEl = document.getElementById("xmlResult");
+      resultEl.textContent = "";
+      resultEl.style.color = "#ccc";
+
+      if (xmlText.trim() === "") {
+        resultEl.textContent = "";
+        return;
+      }
+
+      try {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+        const parseError = xmlDoc.getElementsByTagName("parsererror");
+        if (parseError.length > 0) {
+          resultEl.textContent = "❌ Invalid XML: " + parseError[0].textContent;
+          resultEl.style.color = "red";
+        } else {
+          resultEl.textContent = "✅ XML is valid!";
+          resultEl.style.color = "limegreen";
+        }
+      } catch (e) {
+        resultEl.textContent = "❌ Error parsing XML.";
+        resultEl.style.color = "red";
+      }
+    }
+
+    function validateJSON() {
+      const jsonText = document.getElementById("jsonInput").value;
+      const resultEl = document.getElementById("jsonResult");
+      resultEl.textContent = "";
+      resultEl.style.color = "#ccc";
+
+      if (jsonText.trim() === "") {
+        resultEl.textContent = "";
+        return;
+      }
+
+      try {
+        JSON.parse(jsonText);
+        resultEl.textContent = "✅ JSON is valid!";
+        resultEl.style.color = "limegreen";
+      } catch (e) {
+        resultEl.textContent = "❌ Invalid JSON: " + e.message;
+        resultEl.style.color = "red";
+      }
     }
   </script>
 </body>
