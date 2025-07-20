@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zcode Coding/Building</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #0f0f0f;
+      color: #e0e0e0;
+      display: flex;
+      min-height: 100vh;
+    }
+    aside {
+      width: 220px;
+      background: linear-gradient(135deg, #0d1a26, #001f3f);
+      padding: 2rem 1rem;
+      border-right: 2px solid #00bfff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    aside h1 {
+      color: #00bfff;
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px #00bfff80;
+    }
+    aside button {
+      width: 100%;
+      background: #00bfff;
+      border: none;
+      color: white;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    aside button:hover {
+      background: #008ecc;
+      transform: scale(1.03);
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      overflow: auto;
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    section.page {
+      display: none;
+    }
+    section.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    h2 {
+      text-align: center;
+      color: #00bfff;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 10px #00bfff80;
+    }
+    .home-logo {
+      font-size: 5rem;
+      color: #00bfff;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00bfff80;
+    }
+    .home-description {
+      color: #ccc;
+      font-size: 1.2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px #00bfff88;
+      line-height: 1.6;
+    }
+    .glow {
+      color: #00bfff;
+      text-shadow: 0 0 10px #00bfff80;
+    }
+
+    /* Donators */
+    #donators {
+      background: linear-gradient(180deg, #0d1a26 0%, #000814 100%);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #00bfff33;
+    }
+    .donator-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .donator-card {
+      background: radial-gradient(circle at top left, #1f2a38, #121212);
+      border: 2px solid #00bfff88;
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      box-shadow: 0 0 20px #00bfff33;
+      position: relative;
+      animation: pulseBorder 2s infinite alternate;
+    }
+    @keyframes pulseBorder {
+      0% { box-shadow: 0 0 15px #00bfff33; }
+      100% { box-shadow: 0 0 25px #00bfff66; }
+    }
+    .donator-card h4 {
+      margin: 0;
+      font-size: 1.3rem;
+      color: #ffd700;
+      text-shadow: 0 0 6px #ffd700aa;
+    }
+    .donator-card h4::before {
+      content: "👑 ";
+    }
+    .donator-card p {
+      margin-top: 0.4rem;
+      color: #ccc;
+    }
+    .donator-cta {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #e0e0e0;
+    }
+    .donator-cta a {
+      color: #00bfff;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    .donator-cta a:hover {
+      color: #0099cc;
+    }
+
+    /* Servers Section Styling */
+    .server-category {
+      border: 2px solid #00bfff88;
+      border-radius: 15px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 0 20px #00bfff33;
+      background: radial-gradient(circle at top left, #101c2a, #08122a);
+      transition: box-shadow 0.3s ease;
+    }
+    .server-category:hover {
+      box-shadow: 0 0 35px #00bfff88;
+    }
+
+    .server-category h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      text-align: center;
+      text-shadow: 0 0 8px #00bfffaa;
+    }
+
+    .server-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .server-card {
+      background: #121b2c;
+      border-radius: 10px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 10px #00bfff22;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .server-card:hover {
+      box-shadow: 0 0 18px #00bfff77;
+      transform: scale(1.02);
+    }
+    .server-card h3 {
+      margin: 0 0 0.4rem 0;
+      color: #00bfff;
+      text-shadow: 0 0 8px #00bfffaa;
+    }
+    .server-card p {
+      margin: 0 0 0.6rem 0;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+    .server-card a {
+      color: #00bfff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .server-card a:hover {
+      color: #0099cc;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <h1 class="glow">Zcode</h1>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('servers')">Servers</button>
+    <button onclick="showPage('donators')">Top Donators</button>
+    <button onclick="window.open('https://discord.gg/jqk9TqpEBZ')">Discord</button>
+  </aside>
+  <main>
+    <!-- Home Page -->
+    <section id="home" class="page active">
+      <h1 class="home-logo glow">Zcode</h1>
+      <p class="home-description">
+        Welcome to <strong class="glow">Zcode – The Ultimate DayZ Coding Community</strong><br>
+        Join a thriving community of passionate creators, developers, and server owners dedicated to pushing the boundaries of what's possible in DayZ — across <strong>all platforms</strong>.
+      </p>
+      <p class="home-description">
+        <strong>🔧 What We Offer:</strong><br><br>
+        ⚙️ <strong>Complete Server Builds</strong> – Ready-to-run setups tailored to your vision<br>
+        🛠️ <strong>Custom Editor Work</strong> – Maps, zones, and scenarios built to your specs<br>
+        🧾 <strong>Personalized Traders</strong> – Balanced and immersive economy systems<br>
+        🎮 <strong>Mods for All Platforms</strong> – From console to PC, we’ve got you covered<br>
+        🤝 <strong>Supportive Community</strong> – Learn, share, and grow with fellow modders
+      </p>
+      <p class="home-description">
+        Whether you’re starting your first server or fine-tuning your 100th, <strong>Zcode is here to help.</strong><br>
+        <em>Join us and bring your DayZ ideas to life.</em>
+      </p>
+    </section>
+
+    <!-- Top Donators Page -->
+    <section id="donators" class="page">
+      <h2 class="glow">🌟 Top Donators Wall of Fame 🌟</h2>
+      <p class="donator-cta">
+        Want to see your name shine here? <strong class="glow">Donate £30 or more</strong> and become a legendary supporter of Zcode!
+        <br /><br />
+        Already donated? <a href="https://discord.gg/VxwYuf4KcP" target="_blank">Open a ticket</a> on our Discord so we can proudly feature your name!
+      </p>
+      <div class="donator-list">
+        <div class="donator-card">
+          <h4></h4>
+          <p>Donated $150 – Huge supporter since 2023!</p>
+        </div>
+    </section>
+  </main>
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach((page) => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
